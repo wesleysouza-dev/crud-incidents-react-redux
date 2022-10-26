@@ -24,7 +24,7 @@ class IncidentsList extends Component {
       .deleteIncident(id)
       .then((response) => {
         console.log(response)
-        notification('O Incidente foi cadastrado no sistema!', 'success');
+        notification('O Incidente foi excluído do sistema!', 'success');
         this.props.retrieveIncidents();
       })
       .catch((e) => {
@@ -79,52 +79,56 @@ class IncidentsList extends Component {
           </div>
         </div>
         <br></br>
-        <div className = "row">
-              <table className = "table table-striped table-bordered">
+        <div className="row">
+          <div className="col-12">
+            <table className = "table table-striped table-bordered">
 
-                  <thead>
-                      <tr>
-                          <th>#</th>
-                          <th>Título</th>
-                          <th>Descrição</th>
-                          <th>Criticidade</th>
-                          <th>Tipo</th>
-                          <th>Status</th>
-                          <th></th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {
-                        incidents.map(
-                            (incident, index) => 
-                            <tr key = {incident.id}>
-                                  <td> {++index} </td>   
-                                  <td> {incident.title} </td>   
-                                  <td> {incident.description}</td>
-                                  <td>
-                                    <div className='d-flex justify-content-between'>
-                                        <span>{incident?.criticality ?? 'Não informada'}</span>
-                                        <i className={`bi-${this.arrowStatus(incident?.criticality?.toLowerCase()) ?? ''}`}></i>
-                                    </div>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                        <th>Criticidade</th>
+                        <th>Tipo</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                      incidents.map(
+                          (incident, index) => 
+                          <tr key = {incident.id}>
+                                <td> {++index} </td>   
+                                <td> {incident.title} </td>   
+                                <td> {incident.description}</td>
+                                <td>
+                                  <div className='d-flex justify-content-between'>
+                                      <span>{incident?.criticality ?? 'Não informada'}</span>
+                                      <i className={`bi-${this.arrowStatus(incident?.criticality?.toLowerCase()) ?? ''}`}></i>
+                                  </div>
+                              </td>
+                              <td>
+                                {incident.type}
+                              </td>
+                                <td> 
+                                  <span className={`${incident.status === 0 ? 'bg-danger' : 'bg-primary'} badge`}>
+                                      {incident.status === 0 ? 'Inativo' : 'Ativo'}
+                                  </span>
+                              </td>
+                                <td width="13%">
+                                  <Link to={"/incident/" + incident.id}>
+                                    <button style={{marginLeft: "10px"}} className="btn btn-success btn-sm"><i className="bi-eye"></i></button>
+                                  </Link>
+                                  <button style={{marginLeft: "10px"}} className="btn btn-warning btn-sm"><i className="bi-pencil"></i></button>
+                                  <button style={{marginLeft: "10px"}} className="btn btn-danger btn-sm" data-id={incident.id} onClick={this.confirmDelete}><i className="bi-trash"></i></button>
                                 </td>
-                                  <td>
-                                    {incident.type}
-                                </td>
-                                  <td> 
-                                    <span className={`${incident.status === 0 ? 'bg-danger' : 'bg-primary'} badge`}>
-                                        {incident.status === 0 ? 'Inativo' : 'Ativo'}
-                                    </span>
-                                </td>
-                                  <td width="13%">
-                                      <button style={{marginLeft: "10px"}} className="btn btn-success btn-sm"><i className="bi-eye"></i></button>
-                                      <button style={{marginLeft: "10px"}} className="btn btn-warning btn-sm"><i className="bi-pencil"></i></button>
-                                      <button style={{marginLeft: "10px"}} className="btn btn-danger btn-sm" data-id={incident.id} onClick={this.confirmDelete}><i className="bi-trash"></i></button>
-                                  </td>
-                            </tr>
-                        )
-                      }
-                  </tbody>
-              </table>
+                          </tr>
+                      )
+                    }
+                </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );

@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AddIncident from "./components/add-incident";
-// import Incident from "./components/incident";
+import SingleIncident from "./components/single-incident";
 import IncidentsList from "./components/incidents-list";
 import './App.css';
 
@@ -36,6 +36,7 @@ class App extends Component {
           <Routes>
             <Route exact path="/" element={<IncidentsList/>} />
             <Route exact path="/add" element={<AddIncident/>} />
+            <Route exact path="/incident/:id" element={<SingleIncident/>} />
             {/* 
             <Route exact path="/ver/:id" element={<Incident/>} /> */}
           </Routes>
