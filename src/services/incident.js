@@ -21,10 +21,6 @@ class IncidentDataService {
   delete(id) {
     return axios.delete(`${INCIDENT_API_BASE_URL}/${id}`);
   }
-
-  deleteAll() {
-    return axios.delete(INCIDENT_API_BASE_URL);
-  }
 }
 
 export default new IncidentDataService();

@@ -3,7 +3,6 @@ import {
     RETRIEVE_INCIDENTS,
     UPDATE_INCIDENT,
     DELETE_INCIDENT,
-    DELETE_ALL_INCIDENTS
   } from "./types";
   
   import IncidentDataService from "../services/incident";
@@ -61,20 +60,6 @@ import {
       });
     } catch (err) {
       console.log(err);
-    }
-  };
-  
-  export const deleteAllIncidents = () => async (dispatch) => {
-    try {
-      const res = await IncidentDataService.deleteAll();
-  
-      dispatch({
-        type: DELETE_ALL_INCIDENTS,
-        payload: res.data,
-      });
-  
-      return Promise.resolve(res.data);
-    } catch (err) {
       return Promise.reject(err);
     }
   };

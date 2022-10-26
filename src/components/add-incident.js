@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createIncident } from "../actions/incidents";
 import { Link } from "react-router-dom";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {NotificationContainer} from 'react-notifications';
+import {notification} from "../utils";
 
 class AddIncident extends Component {
   constructor(props) {
@@ -82,12 +83,12 @@ class AddIncident extends Component {
           description: data.description,
           submitted: true,
         });
-        this.alertDisplayMsg('O Incidente foi cadastrado no sistema!', 'success');
+        notification('O Incidente foi cadastrado no sistema!', 'success');
         this.resetIncident();
       })
       .catch((e) => {
         console.log('errors', e);
-        this.alertDisplayMsg('Oops! Não foi possível cadastrar no momento. Volte mais tarde!', 'error');
+        notification('Oops! Não foi possível cadastrar no momento. Volte mais tarde!', 'error');
       })
       .finally((e) => {
         btnSave.disabled = false;
@@ -115,10 +116,6 @@ class AddIncident extends Component {
 
   getStatusDisplay() {
     return this.state?.status === 0 ? 'Inativo' : 'Ativo';
-  }
-
-  alertDisplayMsg(msg, type) {
-    NotificationManager[type](msg);
   }
 
   validationFields = (fieldName = null) => {
