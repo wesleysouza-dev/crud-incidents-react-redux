@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import IncidentDataService from "../services/incident";
 import { Link } from "react-router-dom";
+import { defineIconStatus } from "../utils";
 
 function withParams(Component) {
 return props => <Component {...props} params={useParams()} />;
@@ -45,26 +46,8 @@ class Incident extends Component {
       });
   }
 
-  arrowStatus = (text) => {
-    let classIcon;
-    switch (text) {
-        case 'baixa':
-            classIcon = 'arrow-down text-info';
-            break;
-
-        case 'média':
-            classIcon = 'arrow-right text-warning';
-            break;
-
-        case 'alta':
-            classIcon = 'arrow-up text-danger';
-            break;
-    
-        default:
-            classIcon = 'arrow-right text-success';
-            break;
-    }
-    return classIcon;
+  arrowStatus(text) {
+    return defineIconStatus(text);
   }
 
   render() {

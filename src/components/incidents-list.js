@@ -6,7 +6,7 @@ import {
 } from "../actions/incidents";
 import { Link } from "react-router-dom";
 import {NotificationContainer} from 'react-notifications';
-import {notification} from "../utils";
+import {notification, defineIconStatus} from "../utils";
 
 class IncidentsList extends Component {
   constructor(props) {
@@ -33,26 +33,8 @@ class IncidentsList extends Component {
       });
   }
 
-  arrowStatus = (text) => {
-    let classIcon;
-    switch (text) {
-        case 'baixa':
-            classIcon = 'arrow-down text-info';
-            break;
-
-        case 'média':
-            classIcon = 'arrow-right text-warning';
-            break;
-
-        case 'alta':
-            classIcon = 'arrow-up text-danger';
-            break;
-    
-        default:
-            classIcon = 'arrow-right text-success';
-            break;
-    }
-    return classIcon;
+  arrowStatus(text) {
+    return defineIconStatus(text);
   }
 
   confirmDelete(e) {
