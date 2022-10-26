@@ -64,7 +64,6 @@ class IncidentsList extends Component {
         <div className="row">
           <div className="col-12">
             <table className = "table table-striped table-bordered">
-
                 <thead>
                     <tr>
                         <th>#</th>
@@ -79,33 +78,31 @@ class IncidentsList extends Component {
                 <tbody>
                     {
                       incidents.map(
-                          (incident, index) => 
-                          <tr key = {incident.id}>
-                                <td> {++index} </td>   
-                                <td> {incident.title} </td>   
-                                <td> {incident.description}</td>
-                                <td>
-                                  <div className='d-flex justify-content-between'>
-                                      <span>{incident?.criticality ?? 'Não informada'}</span>
-                                      <i className={`bi-${this.arrowStatus(incident?.criticality?.toLowerCase()) ?? ''}`}></i>
-                                  </div>
-                              </td>
+                        (incident, index) => 
+                        <tr key = {incident.index} data-id={incident.id}>
+                              <td> {++index} </td>   
+                              <td> {incident.title} </td>   
+                              <td> {incident.description}</td>
                               <td>
-                                {incident.type}
+                                <div className='d-flex justify-content-between'>
+                                    <span>{incident?.criticality ?? 'Não informada'}</span>
+                                    <i className={`bi-${this.arrowStatus(incident?.criticality?.toLowerCase()) ?? ''}`}></i>
+                                </div>
+                            </td>
+                            <td>
+                              {incident.type}
+                            </td>
+                              <td> 
+                                <span className={`${incident.status === 0 ? 'bg-danger' : 'bg-primary'} badge`}>
+                                    {incident.status === 0 ? 'Inativo' : 'Ativo'}
+                                </span>
+                            </td>
+                              <td width="13%">
+                                <Link to={"/incident/" + incident.id} style={{marginLeft: "10px"}} className="btn btn-success btn-sm"><i className="bi-eye"></i></Link>
+                                <Link to={"/edt/" + incident.id} style={{marginLeft: "10px"}} className="btn btn-warning btn-sm"><i className="bi-pencil"></i></Link>
+                                <button style={{marginLeft: "10px"}} className="btn btn-danger btn-sm" data-id={incident.id} onClick={this.confirmDelete}><i className="bi-trash"></i></button>
                               </td>
-                                <td> 
-                                  <span className={`${incident.status === 0 ? 'bg-danger' : 'bg-primary'} badge`}>
-                                      {incident.status === 0 ? 'Inativo' : 'Ativo'}
-                                  </span>
-                              </td>
-                                <td width="13%">
-                                  <Link to={"/incident/" + incident.id}>
-                                    <button style={{marginLeft: "10px"}} className="btn btn-success btn-sm"><i className="bi-eye"></i></button>
-                                  </Link>
-                                  <button style={{marginLeft: "10px"}} className="btn btn-warning btn-sm"><i className="bi-pencil"></i></button>
-                                  <button style={{marginLeft: "10px"}} className="btn btn-danger btn-sm" data-id={incident.id} onClick={this.confirmDelete}><i className="bi-trash"></i></button>
-                                </td>
-                          </tr>
+                        </tr>
                       )
                     }
                 </tbody>
@@ -122,7 +119,6 @@ const mapStateToProps = (state) => {
     incidents: state.incidents,
   };
 };
-
 
 export default connect(mapStateToProps, {
   retrieveIncidents,

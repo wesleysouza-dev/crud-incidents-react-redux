@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createIncident } from "../actions/incidents";
+import { useParams } from "react-router-dom";
+import { createIncident, updateIncident } from "../actions/incidents";
 import { Link } from "react-router-dom";
 import {NotificationContainer} from 'react-notifications';
 import {notification} from "../utils";
+import IncidentDataService from "../services/incident";
 
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} />;
+}
 class AddIncident extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +22,7 @@ class AddIncident extends Component {
     this.resetIncident = this.resetIncident.bind(this);
 
     this.state = {
-      id: null,
+      id: this.props.params.id ?? null,
       title: "",
       description: "",
       criticality: "",
@@ -57,46 +62,96 @@ class AddIncident extends Component {
   }
 
   componentDidMount() {
-    if (!this.state?.id) delete this.state['id'];
+    if (!this.state?.id) {
+      delete this.state['id'];
+      return
+    }
+    this.getIncident(this.state?.id);
   }
 
- async saveIncident(e) {
+  componentDidUpdate(previousProps, previousState) {
+    if (previousProps.params !== this.props.params) 
+      return this.resetIncident();
+  }
+
+  getIncident(id) {
+    IncidentDataService.get(id)
+      .then((response) => {
+        this.setState(response.data);
+        notification('Incidente carregado com sucesso!', 'success');
+      })
+      .catch((e) => {
+        console.log('erro', e);
+        this.resetIncident();
+        notification('Oops! Não foi possível carregar o incidente no momento!', 'error');
+      });
+  }
+
+  async saveIncident(e) {
     e.preventDefault();
 
-    const { title, criticality, type, status, description } = this.state;
-    
     const validations = await this.validationFields();
     if (!validations) return false
 
     const btnSave = document.querySelector('.btn-save');
     btnSave.disabled = true;
 
+    (!this.state.id || this.state.id === null) 
+    ? 
+      this.createIncidentForm(btnSave)
+    : 
+      this.updateIncidentForm(this.state.id, this.state, btnSave);
+    
+  }
+
+  createIncidentForm(btn) {
+    const { title, criticality, type, status, description } = this.state;
     this.props
-      .createIncident(title, criticality, type, status, description)
-      .then((data) => {
-        this.setState({
-          id: data?.id,
-          title: data.title,
-          criticality: data.criticality,
-          type: data.type,
-          status: data.status,
-          description: data.description,
-          submitted: true,
-        });
-        notification('O Incidente foi cadastrado no sistema!', 'success');
-        this.resetIncident();
-      })
-      .catch((e) => {
-        console.log('errors', e);
-        notification('Oops! Não foi possível cadastrar no momento. Volte mais tarde!', 'error');
-      })
-      .finally((e) => {
-        btnSave.disabled = false;
-      })
+    .createIncident(title, criticality, type, status, description)
+    .then((data) => {
+      this.setState({
+        id: data?.id,
+        title: data.title,
+        criticality: data.criticality,
+        type: data.type,
+        status: data.status,
+        description: data.description,
+        submitted: true,
+      });
+      notification('O Incidente foi cadastrado no sistema!', 'success');
+      this.resetIncident();
+    })
+    .catch((e) => {
+      const msg = e?.response?.data?.message ?? `Não foi possível cadastrar no momento. Volte mais tarde!`
+      console.log('errors', e);
+      notification(`Oops! ${msg}`, 'error');
+    })
+    .finally((e) => {
+      btn.disabled = false;
+    });
+    
+  }
+
+  updateIncidentForm(id, dataState, btn) {
+    this.props
+    .updateIncident(id, dataState)
+    .then((data) => {
+      this.setState({dataState});
+      notification('O Incidente foi atualizado com sucesso!', 'success');
+    })
+    .catch((e) => {
+      const msg = e?.response?.data?.message ?? `Não foi possível atualizar no momento. Tente mais tarde!`
+      console.log('errors', e);
+      notification(`Oops! ${msg}`, 'error');
+    })
+    .finally((e) => {
+      btn.disabled = false;
+    });
   }
 
   resetIncident() {
     this.setState({
+      id: null,
       title: "",
       description: "",
       criticality: "",
@@ -108,9 +163,9 @@ class AddIncident extends Component {
 
   getTitle(){
     if(!this.state.id){
-        return <h3 className="text-center">Adicionar Incidente</h3>
+      return <h3 className="text-center">Adicionar Incidente</h3>
     }else{
-        return <h3 className="text-center">Atualizar Incidente</h3>
+      return <h3 className="text-center">Atualizar Incidente #{this.state.id}</h3>
     }
   }
 
@@ -120,7 +175,8 @@ class AddIncident extends Component {
 
   validationFields = (fieldName = null) => {
     const incident = this.state;
-    const arrObj = Object.values(this.state);
+    const {id, ...rest} = this.state
+    const arrObj = Object.values(rest);
     const errors = [];
 
     // single field validation
@@ -233,9 +289,11 @@ class AddIncident extends Component {
                         </div>
                     </div>
 
-                    <button className="btn btn-success btn-save" onClick={this.saveIncident}>Cadastrar</button>
-                    <Link to={"/"}>
-                        <button type="button" className="btn btn-danger" style={{marginLeft: "10px"}}>Cancelar</button>
+                    <button className="btn btn-success btn-save" onClick={this.saveIncident}>
+                      {this.state?.id ? 'Atualizar' : 'Cadastrar'}
+                    </button>
+                    <Link to={"/"} type="button" className="btn btn-danger" style={{marginLeft: "10px"}}>
+                      {this.state?.id ? 'Voltar' : 'Cancelar'}
                     </Link>
                 </form>
             </div>
@@ -245,4 +303,4 @@ class AddIncident extends Component {
   }
 }
 
-export default connect(null, { createIncident })(AddIncident);
+export default connect(null, { createIncident, updateIncident })(withParams(AddIncident));

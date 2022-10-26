@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { defineIconStatus } from "../utils";
 
 function withParams(Component) {
-return props => <Component {...props} params={useParams()} />;
+    return props => <Component {...props} params={useParams()} />;
 }
 
 class Incident extends Component {

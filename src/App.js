@@ -36,6 +36,7 @@ class App extends Component {
           <Routes>
             <Route exact path="/" element={<IncidentsList/>} />
             <Route exact path="/add" element={<AddIncident/>} />
+            <Route exact path="/edt/:id" element={<AddIncident/>} />
             <Route exact path="/incident/:id" element={<SingleIncident/>} />
             {/* 
             <Route exact path="/ver/:id" element={<Incident/>} /> */}
