@@ -65,6 +65,7 @@ class IncidentsList extends Component {
             break;
     
         default:
+            classIcon = 'arrow-right text-success';
             break;
     }
     return classIcon;
@@ -73,7 +74,7 @@ class IncidentsList extends Component {
   render() {
     // const { currentIncident, currentIndex } = this.state;
     const { incidents } = this.props;
-    console.log('props',this.props)
+    console.log('incidents',incidents)
 
     return (
       <div>
@@ -110,8 +111,8 @@ class IncidentsList extends Component {
                                     <td> {incident.description}</td>
                                     <td>
                                       <div className='d-flex justify-content-between'>
-                                          <span>{incident.criticality}</span>
-                                          <i className={`bi-${this.arrowStatus(incident.criticality.toLowerCase())}`}></i>
+                                          <span>{incident?.criticality ?? 'Não informada'}</span>
+                                          <i className={`bi-${this.arrowStatus(incident?.criticality?.toLowerCase()) ?? ''}`}></i>
                                       </div>
                                   </td>
                                     <td>

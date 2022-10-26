@@ -238,7 +238,7 @@ class AddIncident extends Component {
 
                     <button className="btn btn-success btn-save" onClick={this.saveIncident}>Cadastrar</button>
                     <Link to={"/"}>
-                        <button className="btn btn-danger" style={{marginLeft: "10px"}}>Cancelar</button>
+                        <button type="button" className="btn btn-danger" style={{marginLeft: "10px"}}>Cancelar</button>
                     </Link>
                 </form>
             </div>
