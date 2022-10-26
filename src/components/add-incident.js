@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createIncident } from "../actions/incidents";
 import { Link } from "react-router-dom";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 class AddIncident extends Component {
   constructor(props) {
@@ -56,12 +57,7 @@ class AddIncident extends Component {
 
   componentDidMount() {
     if (!this.state?.id) delete this.state['id'];
-    this.alertDisplayMsg('Sucesso!!', 'O Incidente foi cadastrado no sistema!', 'success');
   }
-
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-    
-  // }
 
  async saveIncident(e) {
     e.preventDefault();
@@ -70,6 +66,9 @@ class AddIncident extends Component {
     
     const validations = await this.validationFields();
     if (!validations) return false
+
+    const btnSave = document.querySelector('.btn-save');
+    btnSave.disabled = true;
 
     this.props
       .createIncident(title, criticality, type, status, description)
@@ -83,13 +82,16 @@ class AddIncident extends Component {
           description: data.description,
           submitted: true,
         });
-        this.alertDisplayMsg('Sucesso!!', 'O Incidente foi cadastrado no sistema!', 'success');
+        this.alertDisplayMsg('O Incidente foi cadastrado no sistema!', 'success');
         this.resetIncident();
       })
       .catch((e) => {
         console.log('errors', e);
-        this.alertDisplayMsg('Erro!!', 'Não conseguimos cadastrar o incidente no momento, volte mais tarde!', 'danger');
-      });
+        this.alertDisplayMsg('Oops! Não foi possível cadastrar no momento. Volte mais tarde!', 'error');
+      })
+      .finally((e) => {
+        btnSave.disabled = false;
+      })
   }
 
   resetIncident() {
@@ -115,24 +117,8 @@ class AddIncident extends Component {
     return this.state?.status === 0 ? 'Inativo' : 'Ativo';
   }
 
-  alertDisplayMsg(title, msg, type) {
-    const element = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
-      <strong>${title}</strong> ${msg}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>`;
-    const msgAlert = document.querySelector('.msg-alert');
-    msgAlert.innerHTML = element;
-    msgAlert.classList.add('animate');
-    console.log(window.getComputedStyle(msgAlert,':before'));
-
-    const myAlert = document.querySelector('.btn-close');
-    myAlert.addEventListener('click', () => {
-      msgAlert.innerHTML = ''
-    })
-
-    setTimeout(() => {
-      document.querySelector('.alert-dismissible').remove();
-    }, 5000);
+  alertDisplayMsg(msg, type) {
+    NotificationManager[type](msg);
   }
 
   validationFields = (fieldName = null) => {
@@ -168,7 +154,7 @@ class AddIncident extends Component {
   render() {
     return (
       <div className="submit-form mt-5">
-          <div className="msg-alert"></div>
+          <NotificationContainer/>
           <div className="card col-md-6 offset-md-3 offset-md-3 py-4">
             {this.getTitle()}
             <div className = "card-body">
@@ -250,7 +236,7 @@ class AddIncident extends Component {
                         </div>
                     </div>
 
-                    <button className="btn btn-success" onClick={this.saveIncident}>Cadastrar</button>
+                    <button className="btn btn-success btn-save" onClick={this.saveIncident}>Cadastrar</button>
                     <Link to={"/"}>
                         <button className="btn btn-danger" style={{marginLeft: "10px"}}>Cancelar</button>
                     </Link>

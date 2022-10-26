@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './store';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import 'react-notifications/lib/notifications.css';
 
 // As of React 18
 const root = ReactDOM.createRoot(document.getElementById('root'))
