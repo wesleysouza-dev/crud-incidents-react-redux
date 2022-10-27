@@ -36,7 +36,6 @@ class Incident extends Component {
         this.setState({
           currentIncident: response.data,
         });
-        console.log(response.data);
       })
       .catch((e) => {
         console.log('erro', e);
