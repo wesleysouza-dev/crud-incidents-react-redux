@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { createIncident, updateIncident } from '../actions/incidents';
 import { Link } from 'react-router-dom';
-import { NotificationContainer } from 'react-notifications';
 import { notification } from '../utils';
 import IncidentDataService from '../services/incident';
 
@@ -194,7 +193,6 @@ class AddIncident extends Component {
   render() {
     return (
       <div className="submit-form mt-5">
-        <NotificationContainer />
         <div className="card col-md-6 offset-md-3 offset-md-3 py-4">
           {this.getTitle()}
           <div className="card-body">

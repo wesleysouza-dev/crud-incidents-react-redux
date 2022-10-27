@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { retrieveIncidents, deleteIncident } from '../actions/incidents';
 import { Link } from 'react-router-dom';
-import { NotificationContainer } from 'react-notifications';
 import { notification, defineIconStatus, limitCharacter } from '../utils';
 
 class IncidentsList extends Component {
@@ -51,7 +50,6 @@ class IncidentsList extends Component {
 
     return (
       <div>
-        <NotificationContainer />
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="text-center mb-0">Listagem de Incidentes</h2>
           <div className="row">
