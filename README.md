@@ -45,4 +45,6 @@ yarn start
 
 Automaticamente o projeto será aberto em uma aba do seu browser padrão.
 
-![Logo Wesley Souza - Desenvolvedor Web](logo-wrs.png)
+Até a próxima :)!!
+
+[![Logo Wesley Souza - Desenvolvedor Web](logo-wrs.png)](https://wesleysouza.dev)
