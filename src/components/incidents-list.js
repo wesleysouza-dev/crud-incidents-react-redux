@@ -6,7 +6,7 @@ import {
 } from "../actions/incidents";
 import { Link } from "react-router-dom";
 import {NotificationContainer} from 'react-notifications';
-import {notification, defineIconStatus} from "../utils";
+import {notification, defineIconStatus, limitCharacter} from "../utils";
 
 class IncidentsList extends Component {
   constructor(props) {
@@ -79,14 +79,14 @@ class IncidentsList extends Component {
                     {
                       incidents.map(
                         (incident, index) => 
-                        <tr key = {incident.index} data-id={incident.id}>
+                        <tr key={incident.id ?? index} data-id={incident.id}>
                               <td> {++index} </td>   
                               <td> {incident.title} </td>   
-                              <td> {incident.description}</td>
+                              <td> {limitCharacter(incident.description, 50)}</td>
                               <td>
                                 <div className='d-flex justify-content-between'>
-                                    <span>{incident?.criticality ?? 'Não informada'}</span>
-                                    <i className={`bi-${this.arrowStatus(incident?.criticality?.toLowerCase()) ?? ''}`}></i>
+                                  <span>{incident?.criticality ?? 'Não informada'}</span>
+                                  <i className={`bi-${this.arrowStatus(incident?.criticality?.toLowerCase()) ?? ''}`}></i>
                                 </div>
                             </td>
                             <td>

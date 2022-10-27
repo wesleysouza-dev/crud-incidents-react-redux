@@ -25,3 +25,10 @@ export function defineIconStatus(text) {
     }
     return classIcon;
 }
+
+export function limitCharacter(string = '', limit = 0) {  
+    const textCrop = string.substring(0, limit);
+    if (string.length > textCrop.length) 
+        return `${textCrop}[...]`;
+    return textCrop;
+}
