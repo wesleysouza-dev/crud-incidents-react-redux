@@ -1,5 +1,5 @@
 import axios from 'axios';
-const INCIDENT_API_BASE_URL = "http://localhost:8989/api/incidents";
+const INCIDENT_API_BASE_URL = 'http://localhost:8989/api/incidents';
 
 class IncidentDataService {
   getAll() {
