@@ -98,9 +98,9 @@ class IncidentsList extends Component {
                                 </span>
                             </td>
                               <td width="13%">
-                                <Link to={"/incident/" + incident.id} style={{marginLeft: "10px"}} className="btn btn-success btn-sm"><i className="bi-eye"></i></Link>
-                                <Link to={"/edt/" + incident.id} style={{marginLeft: "10px"}} className="btn btn-warning btn-sm"><i className="bi-pencil"></i></Link>
-                                <button style={{marginLeft: "10px"}} className="btn btn-danger btn-sm" data-id={incident.id} onClick={this.confirmDelete}><i className="bi-trash"></i></button>
+                                <Link to={"/incident/" + incident.id} style={{marginLeft: "10px"}} className="btn btn-success btn-sm" title="Visualizar"><i className="bi-eye"></i></Link>
+                                <Link to={"/edt/" + incident.id} style={{marginLeft: "10px"}} className="btn btn-warning btn-sm" title="Editar"><i className="bi-pencil"></i></Link>
+                                <button title="Excluir" style={{marginLeft: "10px"}} className="btn btn-danger btn-sm" data-id={incident.id} onClick={this.confirmDelete}><i className="bi-trash"></i></button>
                               </td>
                         </tr>
                       )
