@@ -75,7 +75,7 @@ class AddIncident extends Component {
     IncidentDataService.get(id)
       .then((response) => {
         this.setState(response.data);
-        // notification('Incidente carregado com sucesso!', 'success');
+        notification('Incidente carregado com sucesso!', 'success');
       })
       .catch((e) => {
         console.log('erro', e);
