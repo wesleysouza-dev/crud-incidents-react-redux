@@ -28,7 +28,6 @@ class AddIncident extends Component {
       criticality: '',
       type: '',
       status: 0,
-      submitted: false,
     };
   }
 
@@ -77,7 +76,7 @@ class AddIncident extends Component {
     IncidentDataService.get(id)
       .then((response) => {
         this.setState(response.data);
-        notification('Incidente carregado com sucesso!', 'success');
+        // notification('Incidente carregado com sucesso!', 'success');
       })
       .catch((e) => {
         console.log('erro', e);
@@ -101,19 +100,11 @@ class AddIncident extends Component {
   }
 
   createIncidentForm(btn) {
-    const { title, criticality, type, status, description } = this.state;
+    console.log('create');
     this.props
-      .createIncident(title, criticality, type, status, description)
+      .createIncident(this.state)
       .then((data) => {
-        this.setState({
-          id: data?.id,
-          title: data.title,
-          criticality: data.criticality,
-          type: data.type,
-          status: data.status,
-          description: data.description,
-          submitted: true,
-        });
+        this.setState(data);
         notification('O Incidente foi cadastrado no sistema!', 'success');
         this.resetIncident();
       })
@@ -132,7 +123,7 @@ class AddIncident extends Component {
     this.props
       .updateIncident(id, dataState)
       .then((data) => {
-        this.setState({ dataState });
+        this.setState({ data });
         notification('O Incidente foi atualizado com sucesso!', 'success');
       })
       .catch((e) => {
@@ -141,7 +132,7 @@ class AddIncident extends Component {
         console.log('errors', e);
         notification(`Oops! ${msg}`, 'error');
       })
-      .finally((e) => {
+      .finally(() => {
         btn.disabled = false;
       });
   }
@@ -154,7 +145,6 @@ class AddIncident extends Component {
       criticality: '',
       type: '',
       status: 0,
-      submitted: false,
     });
   }
 

@@ -3,7 +3,8 @@ import { CREATE_INCIDENT, RETRIEVE_INCIDENTS, UPDATE_INCIDENT, DELETE_INCIDENT }
 import IncidentDataService from '../services/incident';
 
 export const createIncident =
-  (title, criticality, type, status, description) => async (dispatch) => {
+  ({ title, criticality, type, status, description }) =>
+  async (dispatch) => {
     try {
       const res = await IncidentDataService.create({
         title,
