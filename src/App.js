@@ -32,7 +32,7 @@ class App extends Component {
           </div>
         </nav>
 
-        <div className="container mt-3">
+        <div className="container mt-3 pb-5">
           <Routes>
             <Route exact path="/" element={<IncidentsList/>} />
             <Route exact path="/add" element={<AddIncident/>} />
@@ -42,6 +42,12 @@ class App extends Component {
             <Route exact path="/ver/:id" element={<Incident/>} /> */}
           </Routes>
         </div>
+
+        <footer class="footer mt-auto py-3 bg-light">
+          <div class="container text-center">
+            <span class="text-muted">Copyright © {new Date().getFullYear()} - Wesley Souza</span>
+          </div>
+        </footer>
       </Router>
     );
   }
