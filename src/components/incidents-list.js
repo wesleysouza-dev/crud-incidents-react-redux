@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { retrieveIncidents, deleteIncident } from '../actions/incidents';
+import { deleteIncident } from '../actions/incidents';
+import IncidentDataService from '../services/incident';
 import { Link } from 'react-router-dom';
 import { notification, defineIconStatus, limitCharacter } from '../utils';
 
@@ -9,10 +10,29 @@ class IncidentsList extends Component {
     super(props);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.removeIncident = this.removeIncident.bind(this);
+
+    this.state = {
+      incidents: [],
+    };
   }
 
   componentDidMount() {
-    this.props.retrieveIncidents();
+    this.getIncidentAll();
+  }
+
+  getIncidentAll() {
+    IncidentDataService.getAll()
+      .then((response) => {
+        this.setState({
+          incidents: response?.data?.data,
+        });
+      })
+      .catch((e) => {
+        console.log('erro', e);
+        this.setState({
+          incidents: [],
+        });
+      });
   }
 
   removeIncident(id) {
@@ -21,7 +41,12 @@ class IncidentsList extends Component {
       .then((response) => {
         console.log(response);
         notification('O Incidente foi excluído do sistema!', 'success');
-        this.props.retrieveIncidents();
+
+        const { incidents } = this.state;
+        const newIncidents = incidents.filter((item) => item?.id !== Number(id));
+        this.setState({
+          incidents: newIncidents,
+        });
       })
       .catch((e) => {
         notification(
@@ -45,11 +70,10 @@ class IncidentsList extends Component {
   }
 
   render() {
-    // const { currentIncident, currentIndex } = this.state;
-    const { incidents } = this.props;
+    const { incidents } = this.state;
 
     return (
-      <div>
+      <div className="mb-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="text-center mb-0">Listagem de Incidentes</h2>
           <div className="row">
@@ -128,6 +152,8 @@ class IncidentsList extends Component {
                 ))}
               </tbody>
             </table>
+
+            {incidents.length === 0 && <p className="text-center">Nenhum incidente cadastrado.</p>}
           </div>
         </div>
       </div>
@@ -142,6 +168,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-  retrieveIncidents,
   deleteIncident,
 })(IncidentsList);
