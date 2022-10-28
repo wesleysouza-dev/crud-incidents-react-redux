@@ -99,7 +99,6 @@ class AddIncident extends Component {
   }
 
   createIncidentForm(btn) {
-    console.log('create');
     this.props
       .createIncident(this.state)
       .then((data) => {
