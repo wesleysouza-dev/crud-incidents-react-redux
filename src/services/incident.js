@@ -1,5 +1,5 @@
 import axios from 'axios';
-const INCIDENT_API_BASE_URL = "http://localhost:8989/api/incidents";
+const INCIDENT_API_BASE_URL = process.env.REACT_APP_API_HOST;
 
 class IncidentDataService {
   getAll() {
