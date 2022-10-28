@@ -192,7 +192,7 @@ class AddIncident extends Component {
 
   render() {
     return (
-      <div className="submit-form mt-5">
+      <div className="submit-form mt-5 mb-5">
         <div className="card col-md-6 offset-md-3 offset-md-3 py-4">
           {this.getTitle()}
           <div className="card-body">

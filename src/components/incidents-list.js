@@ -49,7 +49,7 @@ class IncidentsList extends Component {
     const { incidents } = this.props;
 
     return (
-      <div>
+      <div className='mb-5'>
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="text-center mb-0">Listagem de Incidentes</h2>
           <div className="row">

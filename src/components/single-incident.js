@@ -53,7 +53,7 @@ class Incident extends Component {
     const { currentIncident } = this.state;
 
     return (
-      <div>
+      <div className='mb-5'>
         {Object.keys(currentIncident).length > 0 ? (
           <div className="mt-5">
             <div className="card">
